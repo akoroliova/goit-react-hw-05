@@ -1,0 +1,24 @@
+.headerContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.searchField {
+    width: 270px;
+    height: 40px;
+    border-radius: 5px;
+    border: 1px solid #808080;
+    line-height: 1.5;
+    letter-spacing: 0.04em;
+    padding-left: 15px;
+    margin-right: 10px;
+}
+
+.searchField::placeholder {
+    color: #808080;
+    font-family: 'Montserrat';
+    font-size: 16px;
+    letter-spacing: 0.04em;
+}
