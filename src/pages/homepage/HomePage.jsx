@@ -1,12 +1,13 @@
-import Navigation from "../../components/navigation/Navigation.jsx";
 import MovieList from "../../components/movielist/MovieList.jsx";
 
-export default function HomePage(buildLinkClass, movies) {
+export default function HomePage(moviesTrending) {
   return (
     <div className="homePageContainer">
-      <Navigation buildLinkClass={buildLinkClass} />
-      <h1>Trending today</h1>
-      {movies.length > 0 && <MovieList items={movies} />}
+      <main>
+        <h1>Trending today</h1>
+        {moviesTrending.length > 0 && <MovieList items={moviesTrending} />}
+      </main>
+      <footer></footer>
     </div>
   );
 }

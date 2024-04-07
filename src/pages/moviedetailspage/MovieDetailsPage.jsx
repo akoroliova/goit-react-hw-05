@@ -1,5 +1,5 @@
-import MovieCast from "../../components/moviecast/MovieCast";
-import MovieReviews from "../../components/moviereviews/MovieReviews";
+//import { useParams } from "react-router-dom";
+import { Link, Outlet } from "react-router-dom";
 
 export default function MovieDetailsPage() {
   return (
@@ -15,9 +15,14 @@ export default function MovieDetailsPage() {
       <hr />
       <h3>Additional information</h3>
       <ul>
-        <MovieCast />
-        <MovieReviews />
+        <li>
+          <Link to="cast">Cast</Link>
+        </li>
+        <li>
+          <Link to="reviews">Reviews</Link>
+        </li>
       </ul>
+      <Outlet />
     </div>
   );
 }

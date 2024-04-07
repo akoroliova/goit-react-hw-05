@@ -1,9 +1,8 @@
-import css from "./MoviesPage.module.css";
-import toast, { Toaster } from "react-hot-toast";
 import MovieList from "../../components/movielist/MovieList.jsx";
-import Navigation from "../../components/navigation/Navigation.jsx";
+import toast, { Toaster } from "react-hot-toast";
+import css from "./MoviesPage.module.css";
 
-export default function MoviesPage({ onSearch, movies, buildLinkClass }) {
+export default function MoviesPage({ onSearch, movies }) {
   const handleSubmit = (evt) => {
     evt.preventDefault();
     const form = evt.target;
@@ -20,25 +19,25 @@ export default function MoviesPage({ onSearch, movies, buildLinkClass }) {
 
   return (
     <div className={css.moviesPageContainer}>
-      <Navigation buildLinkClass={buildLinkClass} />
+      <main>
+        <div className={css.formContainer}>
+          <form onSubmit={handleSubmit}>
+            <input
+              className={css.searchField}
+              type="text"
+              name="topic"
+              autoComplete="off"
+              autoFocus
+            />
 
-      <div className={css.formContainer}>
-        <form onSubmit={handleSubmit}>
-          <input
-            className={css.searchField}
-            type="text"
-            name="topic"
-            autoComplete="off"
-            autoFocus
-          />
+            <button type="submit">Search</button>
+          </form>
+          <Toaster />
+        </div>
 
-          <button type="submit">Search</button>
-        </form>
-
-        <Toaster />
-      </div>
-
-      {movies.length > 0 && <MovieList items={movies} />}
+        {movies.length > 0 && <MovieList items={movies} />}
+      </main>
+      <footer></footer>
     </div>
   );
 }
