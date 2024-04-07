@@ -1,84 +1,64 @@
 import { useEffect, useState } from "react";
-import "./App.css";
-import SearchBar from "../searchbar/SearchBar";
-import ImageGallery from "../imagegallery/ImageGallery";
-import Loader from "../loader/Loader";
-import ErrorMessage from "../errormessage/ErrorMessage.jsx";
-import LoadMoreBtn from "../loadmorebtn/LoadMoreBtn.jsx";
-import ImageModal from "../imagemodal/ImageModal.jsx";
-import { fetchImagesWithTopic } from "../../images-api.js";
+import { Routes, Route } from "react-router-dom";
+import clsx from "clsx";
+import { fetchMoviesWithName } from "../../themoviedb-api.js";
+import Navigation from "../navigation/Navigation.jsx";
+import HomePage from "../../pages/homepage/HomePage.jsx";
+import MoviesPage from "../../pages/moviespage/MoviesPage.jsx";
+import MovieDetailsPage from "../../pages/moviedetailspage/MovieDetailsPage.jsx";
+import MovieCast from "../moviecast/MovieCast.jsx";
+import MovieReviews from "../moviereviews/MovieReviews.jsx";
+import NotFoundPage from "../../pages/notfoundpage/NotFoundPage.jsx";
+import css from "./App.module.css";
 
-function App() {
-  const [images, setImages] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(false);
-  const [page, setPage] = useState(1);
+export default function App() {
+  const [movies, setMovies] = useState([]);
   const [query, setQuery] = useState();
-  const [showLoadMoreBtn, setShowLoadMoreBtn] = useState(false);
-  const [modalIsOpen, setModalIsOpen] = useState(false);
-  const [selectedImage, setSelectedImage] = useState();
-
-  function openModal() {
-    setModalIsOpen(true);
-  }
-
-  function closeModal() {
-    setModalIsOpen(false);
-  }
-
-  function onLoadMoreClick() {
-    setPage(page + 1);
-  }
 
   useEffect(() => {
     async function fetchData() {
       try {
-        setLoading(true);
-        setError(false);
-        const receivedData = await fetchImagesWithTopic(query, page);
-        const totalPages = receivedData.total_pages;
-        setShowLoadMoreBtn(totalPages && totalPages !== page);
-        const imagesArray = receivedData.results;
-        setImages([...images, ...imagesArray]);
+        const receivedData = await fetchMoviesWithName(query);
+        const moviesArray = receivedData.results;
+        setMovies([...movies, ...moviesArray]);
       } catch (error) {
-        setImages([]);
-        setError(true);
-      } finally {
-        setLoading(false);
+        setMovies([]);
+        alert(error);
       }
     }
 
     if (query !== undefined) {
       fetchData();
     }
-  }, [query, page]);
+  }, [query]);
 
   const handleSearch = async (topic) => {
-    setImages([]);
-    setPage(1);
+    setMovies([]);
     setQuery(topic);
+  };
+
+  const buildLinkClass = ({ isActive }) => {
+    return clsx(css.link, isActive && css.active);
   };
 
   return (
     <>
-      <SearchBar onSearch={handleSearch} />
-      {error && <ErrorMessage />}
-      {images.length > 0 && (
-        <ImageGallery
-          items={images}
-          openModal={openModal}
-          setSelectedImage={setSelectedImage}
-        />
-      )}
-      {loading && <Loader />}
-      {showLoadMoreBtn ? <LoadMoreBtn onButtonClick={onLoadMoreClick} /> : null}
-      <ImageModal
-        modalIsOpen={modalIsOpen}
-        closeModal={closeModal}
-        selectedImage={selectedImage}
+      <Navigation />
+      <HomePage buildLinkClass={buildLinkClass} movies={movies} />
+      <MoviesPage
+        buildLinkClass={buildLinkClass}
+        movies={movies}
+        onSearch={handleSearch}
       />
+
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/movies" element={<MoviesPage />} />
+        <Route path="/movies/:id" element={<MovieDetailsPage />} />
+        <Route path="/movies/:id/cast" element={<MovieCast />} />
+        <Route path="/movies/:id/reviews" element={<MovieReviews />} />
+        <Route path="*" element={<NotFoundPage />} />
+      </Routes>
     </>
   );
 }
-
-export default App;

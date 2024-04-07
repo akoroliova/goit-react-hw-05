@@ -1,13 +1,13 @@
+import css from "./MoviesPage.module.css";
 import toast, { Toaster } from "react-hot-toast";
-import css from "./SearchBar.module.css";
+import MovieList from "../../components/movielist/MovieList.jsx";
+import Navigation from "../../components/navigation/Navigation.jsx";
 
-let topic;
-
-export default function SearchBar({ onSearch }) {
+export default function MoviesPage({ onSearch, movies, buildLinkClass }) {
   const handleSubmit = (evt) => {
     evt.preventDefault();
     const form = evt.target;
-    topic = form.elements.topic.value;
+    const topic = form.elements.topic.value;
 
     if (topic.trim().length === 0) {
       toast("Please type your search request first!");
@@ -19,14 +19,15 @@ export default function SearchBar({ onSearch }) {
   };
 
   return (
-    <header>
-      <div className={css.headerContainer}>
+    <div className={css.moviesPageContainer}>
+      <Navigation buildLinkClass={buildLinkClass} />
+
+      <div className={css.formContainer}>
         <form onSubmit={handleSubmit}>
           <input
             className={css.searchField}
             type="text"
             name="topic"
-            placeholder="Search images and photos"
             autoComplete="off"
             autoFocus
           />
@@ -36,6 +37,8 @@ export default function SearchBar({ onSearch }) {
 
         <Toaster />
       </div>
-    </header>
+
+      {movies.length > 0 && <MovieList items={movies} />}
+    </div>
   );
 }
