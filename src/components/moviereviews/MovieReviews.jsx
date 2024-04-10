@@ -1,3 +1,7 @@
 export default function MovieReviews() {
-  return <div>MovieReviews</div>;
+  return (
+    <div>
+      <p>MovieReviews</p>
+    </div>
+  );
 }

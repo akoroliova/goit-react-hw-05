@@ -18,8 +18,8 @@ export default function MoviesPage({ onSearch, movies }) {
   };
 
   return (
-    <div className={css.moviesPageContainer}>
-      <main>
+    <>
+      <main className={css.moviesPageContainer}>
         <div className={css.formContainer}>
           <form onSubmit={handleSubmit}>
             <input
@@ -37,7 +37,6 @@ export default function MoviesPage({ onSearch, movies }) {
 
         {movies.length > 0 && <MovieList items={movies} />}
       </main>
-      <footer></footer>
-    </div>
+    </>
   );
 }

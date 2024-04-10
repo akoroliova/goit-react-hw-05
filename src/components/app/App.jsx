@@ -8,7 +8,7 @@ import MovieDetailsPage from "../../pages/moviedetailspage/MovieDetailsPage.jsx"
 import MovieCast from "../moviecast/MovieCast.jsx";
 import MovieReviews from "../moviereviews/MovieReviews.jsx";
 import NotFoundPage from "../../pages/notfoundpage/NotFoundPage.jsx";
-//import css from "./App.module.css";
+import "./App.module.css";
 
 export default function App() {
   const [movies, setMovies] = useState([]);
@@ -40,7 +40,9 @@ export default function App() {
     const moviesTrendingArray = await fetchTrending();
     setMoviesTrending(moviesTrendingArray);
   }
-  getTrending();
+  useEffect(() => {
+    getTrending();
+  }, []);
 
   return (
     <>
@@ -54,14 +56,16 @@ export default function App() {
         <Route
           path="/movies"
           element={<MoviesPage movies={movies} onSearch={handleSearch} />}
-        >
-          <Route path=":id" element={<MovieDetailsPage />}>
-            <Route path="cast" element={<MovieCast />} />
-            <Route path="reviews" element={<MovieReviews />} />
-          </Route>
+        ></Route>
+        <Route path="/movies/:movieId" element={<MovieDetailsPage />}>
+          <Route path="cast" element={<MovieCast />} />
+          <Route path="reviews" element={<MovieReviews />} />
         </Route>
+
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
+
+      <footer>©️ All rights belong to their respective owners</footer>
     </>
   );
 }

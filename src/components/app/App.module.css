@@ -1,32 +1,28 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 3rem;
-  text-align: center;
-}
-
-.link {
+a {
   font-weight: 500;
   color: #ffffff;
   text-decoration: none;
 }
 
-.link:hover {
+a:hover {
   color: #c4c4c4;
   text-decoration: underline;
 }
 
 ul {
-  padding: 0px;
+  margin: 0;
+  list-style-type: none;
 }
 
 li {
-  list-style-type: none;
+  text-decoration: underline;
 }
 
 h1 {
   font-size: 3.2em;
   line-height: 1.1;
+  margin: 0px;
+  padding-bottom: 10px;
 }
 
 p {
@@ -53,11 +49,13 @@ button:hover {
   border-color: #1fc5c5;
 }
 
-.nav {
-  display: flex;
-  gap: 4px;
-}
-
 .active {
   color: orange;
+}
+
+footer {
+  font-size: 10px;
+  position: sticky;
+  text-align: center;
+  padding: 10px;
 }
