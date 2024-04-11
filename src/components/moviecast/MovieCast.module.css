@@ -1,0 +1,9 @@
+.castListItem {
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 30px;
+}
+
+.castListItem h3 {
+    margin: 0;
+}

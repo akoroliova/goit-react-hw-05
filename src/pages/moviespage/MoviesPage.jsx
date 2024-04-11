@@ -1,8 +1,12 @@
 import MovieList from "../../components/movielist/MovieList.jsx";
 import toast, { Toaster } from "react-hot-toast";
 import css from "./MoviesPage.module.css";
+import { useSearchParams } from "react-router-dom";
 
 export default function MoviesPage({ onSearch, movies }) {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const searchedMovieName = searchParams.get("query") ?? "";
+
   const handleSubmit = (evt) => {
     evt.preventDefault();
     const form = evt.target;
@@ -12,7 +16,7 @@ export default function MoviesPage({ onSearch, movies }) {
       toast("Please type your search request first!");
       return;
     }
-
+    setSearchParams({ query: topic });
     onSearch(topic);
     form.reset();
   };
@@ -27,7 +31,7 @@ export default function MoviesPage({ onSearch, movies }) {
               type="text"
               name="topic"
               autoComplete="off"
-              autoFocus
+              defaultValue={searchedMovieName}
             />
 
             <button type="submit">Search</button>

@@ -9,12 +9,13 @@ export default function MovieDetailsPage() {
   const backLinkHref = location.state?.from ?? "/";
   const { movieId } = useParams();
   const [movie, setMovie] = useState();
+  const defaultImg = "https://via.placeholder.com/240x360";
 
   useEffect(() => {
     async function fetchData() {
       try {
-        const movie = await fetchMovieById(movieId);
-        setMovie(movie);
+        const movieData = await fetchMovieById(movieId);
+        setMovie(movieData);
       } catch (error) {
         alert(error);
       }
@@ -25,29 +26,46 @@ export default function MovieDetailsPage() {
     }
   }, [movieId]);
 
+  if (movie === undefined) {
+    return <div>Loading...</div>;
+  }
+
+  const genresList = movie.genres.map((genre) => genre.name);
+  const genresString = genresList.join(", ");
+
   return (
-    <div className={css.detailsPageContainer}>
+    <main className={css.detailsPageContainer}>
       <Link to={backLinkHref} aria-label="Go back">
         &#8592; Go back
       </Link>
 
       <div className={css.generalInfoContainer}>
         <div className={css.moviePosterContainer}>
-          <img src="https://via.placeholder.com/240x360" alt="Movie poster" />
+          <img
+            src={
+              movie.poster_path
+                ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
+                : defaultImg
+            }
+            alt="Movie poster"
+            width={250}
+          />
         </div>
 
         <div className={css.generalInfoText}>
           <h1>{movie.title}</h1>
-          <p>User score: {}</p>
+          <p>
+            User score: {movie.vote_average} ({movie.vote_count} votes)
+          </p>
           <h2>Overview</h2>
-          <p>overview text</p>
+          <p>{movie.overview}</p>
           <h3>Genres</h3>
-          <p>genres list</p>
+          <p>{genresString}</p>
         </div>
       </div>
 
       <div className={css.additionalInfoContainer}>
-        <p>Additional information</p>
+        <h3>Additional information</h3>
         <ul>
           <li>
             <Link to="cast">Cast</Link>
@@ -58,6 +76,6 @@ export default function MovieDetailsPage() {
         </ul>
         <Outlet />
       </div>
-    </div>
+    </main>
   );
 }

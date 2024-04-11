@@ -10,11 +10,6 @@
     gap: 10px;
 }
 
-.moviePosterContainer {
-    max-width: 100%;
-    max-height: 100%;
-}
-
 .generalInfoText {
     display: flex;
     flex-direction: column;
@@ -26,4 +21,9 @@
     display: flex;
     flex-direction: column;
     gap: 10px;
+}
+
+.additionalInfoContainer a {
+    text-decoration: underline;
+    color: rgb(116, 169, 204);
 }
