@@ -1,18 +1,21 @@
 import { useEffect, useState } from "react";
 import { Routes, Route } from "react-router-dom";
 import { fetchMoviesWithName, fetchTrending } from "../../themoviedb-api.js";
-import Navigation from "../navigation/Navigation.jsx";
-import HomePage from "../../pages/homepage/HomePage.jsx";
-import MoviesPage from "../../pages/moviespage/MoviesPage.jsx";
-import MovieDetailsPage from "../../pages/moviedetailspage/MovieDetailsPage.jsx";
-import MovieCast from "../moviecast/MovieCast.jsx";
-import MovieReviews from "../moviereviews/MovieReviews.jsx";
-import NotFoundPage from "../../pages/notfoundpage/NotFoundPage.jsx";
-
+import { lazy, Suspense } from "react";
 import clsx from "clsx";
 import css from "./App.module.css";
 
-//Додай асинхронне завантаження JS-коду для маршрутів застосунку, використовуючи React.lazy та Suspense.
+const Navigation = lazy(() => import("../navigation/Navigation.jsx"));
+const HomePage = lazy(() => import("../../pages/homepage/HomePage.jsx"));
+const MoviesPage = lazy(() => import("../../pages/moviespage/MoviesPage.jsx"));
+const MovieDetailsPage = lazy(() =>
+  import("../../pages/moviedetailspage/MovieDetailsPage.jsx")
+);
+const MovieCast = lazy(() => import("../moviecast/MovieCast.jsx"));
+const MovieReviews = lazy(() => import("../moviereviews/MovieReviews.jsx"));
+const NotFoundPage = lazy(() =>
+  import("../../pages/notfoundpage/NotFoundPage.jsx")
+);
 
 export default function App() {
   const [movies, setMovies] = useState([]);
@@ -56,22 +59,24 @@ export default function App() {
     <>
       <Navigation buildLinkClass={buildLinkClass} />
 
-      <Routes>
-        <Route
-          path="/"
-          element={<HomePage moviesTrending={moviesTrending} />}
-        />
-        <Route
-          path="/movies"
-          element={<MoviesPage movies={movies} onSearch={handleSearch} />}
-        ></Route>
-        <Route path="/movies/:movieId" element={<MovieDetailsPage />}>
-          <Route path="cast" element={<MovieCast />} />
-          <Route path="reviews" element={<MovieReviews />} />
-        </Route>
+      <Suspense fallback={<div>Loading...</div>}>
+        <Routes>
+          <Route
+            path="/"
+            element={<HomePage moviesTrending={moviesTrending} />}
+          />
+          <Route
+            path="/movies"
+            element={<MoviesPage movies={movies} onSearch={handleSearch} />}
+          ></Route>
+          <Route path="/movies/:movieId" element={<MovieDetailsPage />}>
+            <Route path="cast" element={<MovieCast />} />
+            <Route path="reviews" element={<MovieReviews />} />
+          </Route>
 
-        <Route path="*" element={<NotFoundPage />} />
-      </Routes>
+          <Route path="*" element={<NotFoundPage />} />
+        </Routes>
+      </Suspense>
 
       <footer>©️ All rights belong to their respective owners</footer>
     </>

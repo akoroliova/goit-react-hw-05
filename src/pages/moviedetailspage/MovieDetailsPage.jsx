@@ -1,7 +1,6 @@
-import { useParams } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
+import { Link, Outlet, useLocation, useParams } from "react-router-dom";
 import { fetchMovieById } from "../../themoviedb-api";
-import { Link, Outlet, useLocation } from "react-router-dom";
 import css from "./MovieDetailsPage.module.css";
 
 export default function MovieDetailsPage() {
@@ -75,7 +74,9 @@ export default function MovieDetailsPage() {
             <Link to="reviews">Reviews</Link>
           </li>
         </ul>
-        <Outlet />
+        <Suspense fallback={<div>Loading subpage...</div>}>
+          <Outlet />
+        </Suspense>
       </div>
     </main>
   );

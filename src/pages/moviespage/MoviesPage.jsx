@@ -39,7 +39,11 @@ export default function MoviesPage({ onSearch, movies }) {
           <Toaster />
         </div>
 
-        {movies.length > 0 && <MovieList items={movies} />}
+        {movies.length > 0 ? (
+          <MovieList items={movies} />
+        ) : (
+          <div>No movies found on that query</div>
+        )}
       </main>
     </>
   );
