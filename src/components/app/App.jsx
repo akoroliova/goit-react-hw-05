@@ -8,16 +8,25 @@ import MovieDetailsPage from "../../pages/moviedetailspage/MovieDetailsPage.jsx"
 import MovieCast from "../moviecast/MovieCast.jsx";
 import MovieReviews from "../moviereviews/MovieReviews.jsx";
 import NotFoundPage from "../../pages/notfoundpage/NotFoundPage.jsx";
-import "./App.module.css";
+
+import clsx from "clsx";
+import css from "./App.module.css";
+
+//Додай асинхронне завантаження JS-коду для маршрутів застосунку, використовуючи React.lazy та Suspense.
 
 export default function App() {
   const [movies, setMovies] = useState([]);
   const [moviesTrending, setMoviesTrending] = useState([]);
   const [query, setQuery] = useState();
 
+  const buildLinkClass = ({ isActive }) => {
+    return clsx(css.a, isActive && css.active);
+  };
+
   useEffect(() => {
     async function fetchData() {
       try {
+        setMovies([]);
         const moviesArray = await fetchMoviesWithName(query);
         setMovies([...movies, ...moviesArray]);
       } catch (error) {
@@ -32,7 +41,6 @@ export default function App() {
   }, [query]);
 
   const handleSearch = async (topic) => {
-    setMovies([]);
     setQuery(topic);
   };
 
@@ -46,7 +54,7 @@ export default function App() {
 
   return (
     <>
-      <Navigation />
+      <Navigation buildLinkClass={buildLinkClass} />
 
       <Routes>
         <Route
